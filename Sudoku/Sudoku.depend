@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1654423554 source:f:\dokumente\schule dateien\sudoku\eingabe.c
+
+1655746302 source:f:\dokumente\schule dateien\sudoku\main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<time.h>
+	<stdbool.h>
+	"eingabe.h"
+
+1655746454 f:\dokumente\schule dateien\sudoku\eingabe.h
+
