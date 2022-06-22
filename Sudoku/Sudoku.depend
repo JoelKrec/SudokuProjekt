@@ -9,3 +9,27 @@
 
 1655790882 /home/joel/develop/CodeBlocksProjects/Sudoku/game_input.h
 
+1655791473 source:/home/joel/develop/SudokuProjekt/Sudoku/game_input.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<time.h>
+	<stdbool.h>
+	"game_input.h"
+
+1655791477 /home/joel/develop/SudokuProjekt/Sudoku/game_input.h
+
+1655791479 source:/home/joel/develop/SudokuProjekt/Sudoku/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<time.h>
+	<stdbool.h>
+	"game_input.h"
+
+1655890441 source:/home/joel/develop/SudokuProjekt/Sudoku/end_screen.c
+	"end_screen.h"
+
+1655890428 /home/joel/develop/SudokuProjekt/Sudoku/end_screen.h
+	<stdbool.h>
+

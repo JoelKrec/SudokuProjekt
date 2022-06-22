@@ -6,6 +6,6 @@ void show_end_screen(bool isWin)
 {
     if(isWin)
     {
-        printf("WIN")
+        printf("WIN");
     }
 }

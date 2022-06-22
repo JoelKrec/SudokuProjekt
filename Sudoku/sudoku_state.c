@@ -11,7 +11,7 @@ struct game_state
 
 // params: any state
 // returns a state in it's default position (start state (0))
-void initialize_game_state(struct game_state emptyState)
+struct game_state initialize_game_state(struct game_state emptyState)
 {
     emptyState.state = 0;
 

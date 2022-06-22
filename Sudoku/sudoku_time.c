@@ -1,7 +1,8 @@
 #include <time.h>
 #include "sudoku_time.h"
+#include <stdbool.h>
 
-struct sudoku_timer()
+struct sudoku_timer
 {
     clock_t st;
 }
