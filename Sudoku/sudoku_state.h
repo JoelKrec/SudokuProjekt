@@ -1,13 +1,20 @@
 #pragma once
 
-void initialize_game_state(struct game_state emptyState);
+typedef struct game_state
+{
+    int state;
+} Game_state;
 
-void try_change_state(struct game_state* state, int targetState);
+typedef struct game_state Game_state;
 
-bool is_start_state(struct game_state state);
+Game_state initialize_game_state();
 
-bool is_control_state(struct game_state state);
+void try_change_state(Game_state* state, int targetState);
 
-bool is_game_state(struct game_state state);
+bool is_start_state(Game_state state);
 
-bool is_end_state(struct game_state state);
+bool is_control_state(Game_state state);
+
+bool is_game_state(Game_state state);
+
+bool is_end_state(Game_state state);

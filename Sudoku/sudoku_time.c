@@ -5,7 +5,7 @@
 struct sudoku_timer
 {
     clock_t st;
-}
+};
 
 //params: clock_t created at the beginning of the game
 //returns the difference in time since the beginning of the game in seconds

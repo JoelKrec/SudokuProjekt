@@ -3,16 +3,11 @@
 #include <stdbool.h>
 #include "sudoku_state.h"
 
-
-struct game_state
-{
-    int state;
-}
-
-// params: any state
 // returns a state in it's default position (start state (0))
-struct game_state initialize_game_state(struct game_state emptyState)
+Game_state initialize_game_state()
 {
+    Game_state emptyState;
+
     emptyState.state = 0;
 
     return emptyState;
@@ -20,28 +15,28 @@ struct game_state initialize_game_state(struct game_state emptyState)
 
 // params: current state
 // returns true if the current state is of start state (0)
-bool is_start_state(struct game_state state)
+bool is_start_state(Game_state state)
 {
     return state.state == 0;
 }
 
 // params: current state
 // returns true if the current state is of control state (1)
-bool is_control_state(struct game_state state)
+bool is_control_state(Game_state state)
 {
     return state.state == 1;
 }
 
 // params: current state
 // returns true if the current state is of game state (2)
-bool is_game_state(struct game_state state)
+bool is_game_state(Game_state state)
 {
     return state.state == 2;
 }
 
 // params: current state
 // returns true if the current state is of end state (3)
-bool is_end_state(struct game_state state)
+bool is_end_state(Game_state state)
 {
     return state.state == 3;
 }
@@ -52,14 +47,14 @@ bool is_end_state(struct game_state state)
 // from: 1 to: 2
 // from: 2 to: 1, 3
 // from: 3 to 1
-void try_change_state(struct game_state* state, int targetState)
+void try_change_state(Game_state* state, int targetState)
 {
-    switch(state.state)
+    switch(state->state)
     {
     case 0:
         if(targetState == 1)
         {
-            state.state = targetState;
+            state->state = targetState;
         }
         else
         {
@@ -69,7 +64,7 @@ void try_change_state(struct game_state* state, int targetState)
     case 1:
         if(targetState == 2)
         {
-            state.state = targetState;
+            state->state = targetState;
         }
         else
         {
@@ -79,7 +74,7 @@ void try_change_state(struct game_state* state, int targetState)
     case 2:
         if(targetState <= 2 && targetState >= 1)
         {
-            state.state = targetState;
+            state->state = targetState;
         }
         else
         {
@@ -89,7 +84,7 @@ void try_change_state(struct game_state* state, int targetState)
     case 3:
         if(targetState == 0)
         {
-            state.state = targetState;
+            state->state = targetState;
         }
         else
         {

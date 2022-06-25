@@ -4,6 +4,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include "game_input.h"
+#include "sudoku_state.h"
 
 
 
@@ -107,13 +108,13 @@ void go_left(int* posSmall, int* posBig, bool* detail)
     }
 }
 
-void get_input_game_state(int* posBig, int* posSmall, bool* detail, int (*sudoku)[9][9])
+void get_input_game_state(Game_state* state, int* posBig, int* posSmall, bool* detail, int (*sudoku)[9][9])
 {
 
     int input_number = 0;
     bool change_number = false;
 
-    int c = getchar();
+    int c = getch();
     switch(c)
     {
 
@@ -160,7 +161,8 @@ void get_input_game_state(int* posBig, int* posSmall, bool* detail, int (*sudoku
         break;
 
     case 'c':  // = C
-        // switch to control sate
+        try_change_state(state, 1);
+        break;
 
     // Handling number input
 
@@ -208,5 +210,51 @@ void get_input_game_state(int* posBig, int* posSmall, bool* detail, int (*sudoku
     if(change_number)
     {
         (*sudoku)[*posBig][*posSmall] = input_number;
+    }
+}
+
+void get_input_control_state(Game_state* state)
+{
+    show_control_screen();
+
+    char c = getch();
+
+    printf("You are in control state and you pressed - %c", c);
+
+    try_change_state(state, 2);
+}
+
+void get_input_start_state(Game_state* state, clock_t* time)
+{
+    char c = getch();
+
+    printf("You are in start state and you pressed - %c", c);
+}
+
+void get_input_end_state(Game_state* state, clock_t* time)
+{
+    char c = getch();
+
+    printf("You are in end state and you pressed - %c", c);
+
+    try_change_state(state, 1);
+}
+
+void get_state_input(Game_state* state, int* posBig, int* posSmall, bool* detail, int (*sudoku)[9][9], clock_t* time)
+{
+    switch(state->state)
+    {
+    case 0:
+        get_input_start_state(state, time);
+        break;
+    case 1:
+        get_input_control_state(state);
+        break;
+    case 2:
+        get_input_game_state(state, posBig, posSmall, detail, sudoku);
+        break;
+    case 3:
+        get_input_end_state(state, time);
+        break;
     }
 }
