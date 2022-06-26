@@ -5,10 +5,16 @@
 #include <stdbool.h>
 #include "game_input.h"
 #include "sudoku_state.h"
+#include "displayGame.h"
+#include "control_screen.h"
+#include "saveload.h"
+#include "saveScreen.h"
 
 
-
-void increase_vertical(int* position)
+//params: pointer to an int with the desired position to change
+//
+//increases a position variable accordingly on the vertical axis
+void increaseVertical(int* position)
 {
     *position -= 3;
     if(*position <= -1)
@@ -17,19 +23,25 @@ void increase_vertical(int* position)
     }
 }
 
-void go_up(int* posSmall, int* posBig, bool* detail)
+//params: pointer to int with the desired positions to change and a boolean whether the user is in detailed view or not
+//
+//moves the user one block or field up depending on the detail param
+void goUp(int* posSmall, int* posBig, bool* detail)
 {
     if(*detail)
     {
-        increase_vertical(posSmall);
+        increaseVertical(posSmall);
     }
     else
     {
-        increase_vertical(posBig);
+        increaseVertical(posBig);
     }
 }
 
-void decrease_vertical(int* position)
+//params: pointer to an int with the desired position to change
+//
+//decreases a position variable accordingly on the vertical axis
+void decreaseVertical(int* position)
 {
     *position += 3;
     if(*position >= 9)
@@ -38,19 +50,25 @@ void decrease_vertical(int* position)
     }
 }
 
-void go_down(int* posSmall, int* posBig, bool* detail)
+//params: pointer to int with the desired positions to change and a boolean whether the user is in detailed view or not
+//
+//moves the user one block or field down depending on the detail param
+void goDown(int* posSmall, int* posBig, bool* detail)
 {
     if(*detail)
     {
-        decrease_vertical(posSmall);
+        decreaseVertical(posSmall);
     }
     else
     {
-        decrease_vertical(posBig);
+        decreaseVertical(posBig);
     }
 }
 
-void increase_horizontal(int* position)
+//params: pointer to an int with the desired position to change
+//
+//increases a position variable accordingly on the horizontal axis
+void increaseHorizontal(int* position)
 {
     *position += 1;
     switch(*position)
@@ -67,19 +85,25 @@ void increase_horizontal(int* position)
     }
 }
 
-void go_right(int* posSmall, int* posBig, bool* detail)
+//params: pointer to an int with the desired positions to change and a boolean whether the user is in detailed view or not
+//
+//moves the user one block or field to the right depending on the detail param
+void goRight(int* posSmall, int* posBig, bool* detail)
 {
     if(*detail)
     {
-        increase_horizontal(posSmall);
+        increaseHorizontal(posSmall);
     }
     else
     {
-        increase_horizontal(posBig);
+        increaseHorizontal(posBig);
     }
 }
 
-void decrease_horizontal(int* position)
+//params: pointer to an int with the desired position to change
+//
+//decreases a position variable accordingly on the horizontal axis
+void decreaseHorizontal(int* position)
 {
     *position -= 1;
     switch(*position)
@@ -96,23 +120,44 @@ void decrease_horizontal(int* position)
     }
 }
 
-void go_left(int* posSmall, int* posBig, bool* detail)
+//params: pointer to int with the desired positions to change and a boolean whether the user is in detailed view or not
+//
+//moves the user one block or field to the left depending on the detail param
+void goLeft(int* posSmall, int* posBig, bool* detail)
 {
     if(*detail)
     {
-        decrease_horizontal(posSmall);
+        decreaseHorizontal(posSmall);
     }
     else
     {
-        decrease_horizontal(posBig);
+        decreaseHorizontal(posBig);
     }
 }
 
-void get_input_game_state(Game_state* state, int* posBig, int* posSmall, bool* detail, int (*sudoku)[9][9])
-{
 
-    int input_number = 0;
-    bool change_number = false;
+//params: pointer to int with the desired positions to change, a boolean pointer, the current gamestate pointer, a pointer to the current board, the total time in seconds and the current Loop clock
+//
+//moves the user through the game board, lets them change numbers and save or win the game
+//
+//returns: 1 if the game can continue and 0 if the game has come to an end through winning or saving the game
+int getInputGameState(GameState* state, int* posBig, int* posSmall, bool* detail, int (*sudoku)[9][9], int timeInSecs, clock_t loopStartClock)
+{
+    int returnInt = 1;
+    int checkInt = 0;
+    int inputNumber = 0;
+    bool changeNumber = false;
+
+    int screenSize = getScreenWidth();
+
+
+    screenSize = screenSize / 5;
+
+    int overflowScreenSize = screenSize % 18;
+    screenSize -= overflowScreenSize;
+
+    grid(screenSize * 2, screenSize, *posBig, *posSmall, *detail);    //Startwert kommt von Nikita nach
+    fillGrid(*sudoku, screenSize * 2, screenSize);
 
     int c = getch();
     switch(c)
@@ -122,34 +167,25 @@ void get_input_game_state(Game_state* state, int* posBig, int* posSmall, bool* d
 
     case 119: // = W
     case 72:  // = Arrow up
-        printf("UP\n");
-
-        go_up(posSmall, posBig, detail);
+        goUp(posSmall, posBig, detail);
 
         break;
     case 115:  // = S
     case 80:   // = Arrow down
-        printf("DOWN\n");
-
-        go_down(posSmall, posBig, detail);
+        goDown(posSmall, posBig, detail);
 
         break;
     case 100:  // = D
     case 77:   // = Arrow right
-        printf("RIGHT\n");
-
-        go_right(posSmall, posBig, detail);
+        goRight(posSmall, posBig, detail);
 
         break;
     case 97:   // = A
     case 75:   // = Arrow left
-        printf("LEFT\n");
-
-        go_left(posSmall, posBig, detail);
+        goLeft(posSmall, posBig, detail);
 
         break;
     case 32:   // = Spacebar
-        printf("Array Switch!\n");
         if(*detail)
         {
             *detail = false;
@@ -161,100 +197,179 @@ void get_input_game_state(Game_state* state, int* posBig, int* posSmall, bool* d
         break;
 
     case 'c':  // = C
-        try_change_state(state, 1);
+        tryChangeState(state, 1);
+        break;
+
+    case 13:    // = Return
+        checkInt = sudokuCheck(*sudoku);
+
+        switch(checkInt)
+        {
+        case -1:
+            // board not filled / contains zeros!
+            setCursor(0, screenSize + 1);   // Sets the cursor to the end of the Board
+
+            printf("\nBoard not filled completly. Fill every field slot and try again!");
+
+            break;
+        case 0:
+            // board not solved but filled completly
+            setCursor(0, screenSize + 1);   // Sets the cursor to the end of the Board
+
+            printf("\nBoard not correct. Change some values and try again!                ");   // added more spaces to overwrite potential other messages like the one above this one
+
+            break;
+        case 1:
+            tryChangeState(state, 3);
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case 27:    // = ESC
+        saveSudoku(loopStartClock, timeInSecs, sudoku);
+
+        returnInt = 0;
         break;
 
     // Handling number input
 
+    case 48:
+        inputNumber = 0;
+        changeNumber = true;
+        break;
     case 49:
-        input_number = 1;
-        change_number = true;
+        inputNumber = 1;
+        changeNumber = true;
         break;
     case 50:
-        input_number = 2;
-        change_number = true;
+        inputNumber = 2;
+        changeNumber = true;
         break;
     case 51:
-        input_number = 3;
-        change_number = true;
+        inputNumber = 3;
+        changeNumber = true;
         break;
     case 52:
-        input_number = 4;
-        change_number = true;
+        inputNumber = 4;
+        changeNumber = true;
         break;
     case 53:
-        input_number = 5;
-        change_number = true;
+        inputNumber = 5;
+        changeNumber = true;
         break;
     case 54:
-        input_number = 6;
-        change_number = true;
+        inputNumber = 6;
+        changeNumber = true;
         break;
     case 55:
-        input_number = 7;
-        change_number = true;
+        inputNumber = 7;
+        changeNumber = true;
         break;
     case 56:
-        input_number = 8;
-        change_number = true;
+        inputNumber = 8;
+        changeNumber = true;
         break;
     case 57:
-        input_number = 9;
-        change_number = true;
+        inputNumber = 9;
+        changeNumber = true;
         break;
     default:
-        printf("%i", c);
         break;
     }
 
-    if(change_number)
+    if(changeNumber)  // Only changes the value if an actual number input was made
     {
-        (*sudoku)[*posBig][*posSmall] = input_number;
+        (*sudoku)[*posBig][*posSmall] = inputNumber;
     }
+
+    return returnInt;
 }
 
-void get_input_control_state(Game_state* state)
+
+//params: A pointer to the current gamestate
+//
+//shows the control screen and changes state to the game gamestate after any button press
+void getInputControlState(GameState* state)
 {
-    show_control_screen();
+    system("cls");
 
-    char c = getch();
+    showControlScreen();
 
-    printf("You are in control state and you pressed - %c", c);
+    switch(getch())
+    {
+    default:
+        printf("continue!");  //Waits for Input and continues after any button press!
+        break;
+    }
 
-    try_change_state(state, 2);
+    system("cls");
+
+    tryChangeState(state, 2);
 }
 
-void get_input_start_state(Game_state* state, clock_t* time)
-{
-    char c = getch();
 
-    printf("You are in start state and you pressed - %c", c);
+//params: A pointer to the current gamestate, a pointer to the current board and a pointer to the total time
+//
+//Shows the loading screen, lets the user chose a save file and changes state to the control screen state
+void getInputStartState(GameState* state, int (*sudoku)[9][9], int* timeInSecs)
+{
+    Savegame game;
+
+    game.timePlayed = 0;
+    if (loadScreen(&game)) {
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                (*sudoku)[i][j] = game.sudoku[i][j];
+            }
+        }
+
+        *timeInSecs = game.timePlayed;
+    }
+    else{
+        *timeInSecs = 0;
+    }
+
+    tryChangeState(state, 1);
 }
 
-void get_input_end_state(Game_state* state, clock_t* time)
+
+//params: A pointer to the current gamestate and a pointer to the total time
+//
+//Shows the win screen and closes the game
+//
+//returns always 0 to quit the game
+int getInputEndState(GameState* state, int* timeInSecs)
 {
-    char c = getch();
+    showEndScreen(*timeInSecs);
 
-    printf("You are in end state and you pressed - %c", c);
-
-    try_change_state(state, 1);
+    return 0;
 }
 
-void get_state_input(Game_state* state, int* posBig, int* posSmall, bool* detail, int (*sudoku)[9][9], clock_t* time)
+//params:pointer to int with the desired positions to change, a boolean pointer, the current gamestate pointer, a pointer to the current board, the total time in seconds and the current Loop clock
+//
+//Processes the user input and starts the according state function
+//
+//returns: 1 if the game can continue and 0 if the game needs to close
+int getStateInput(GameState* state, int* posBig, int* posSmall, bool* detail, int (*sudoku)[9][9], int* timeInSecs, clock_t loopStartClock)
 {
+    int returnInt = 1;
     switch(state->state)
     {
     case 0:
-        get_input_start_state(state, time);
+        getInputStartState(state, sudoku, timeInSecs);
         break;
     case 1:
-        get_input_control_state(state);
+        getInputControlState(state);
         break;
     case 2:
-        get_input_game_state(state, posBig, posSmall, detail, sudoku);
+        returnInt = getInputGameState(state, posBig, posSmall, detail, sudoku, *timeInSecs, loopStartClock);
         break;
     case 3:
-        get_input_end_state(state, time);
+        returnInt = getInputEndState(state, timeInSecs);
         break;
     }
+    return returnInt;
 }

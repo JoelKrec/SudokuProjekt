@@ -31,6 +31,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="control_screen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="control_screen.h" />
+		<Unit filename="displayGame.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="displayGame.h" />
 		<Unit filename="end_screen.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -42,6 +50,18 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="saveScreen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="saveScreen.h" />
+		<Unit filename="saveload.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="saveload.h" />
+		<Unit filename="solveSudoku.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="solveSudoku.h" />
 		<Unit filename="sudoku_state.c">
 			<Option compilerVar="CC" />
 		</Unit>

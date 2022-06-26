@@ -1,5 +1,9 @@
 #pragma once
 
-void show_control_screen();
+void showControlScreen();
 
-void print_heading(char* header);
+void printHeading(char* header, char frameChar, int borderWidth);
+
+void printHeadingMain(char* header);
+
+void printHeadingSub(char* header);

@@ -1,3 +1,14 @@
+/**
+
+A simple Sudoku game to play
+
+Authors: Nikita Morosov, Lukas Tetzlaf, Joel Krec
+
+Date: 26.06.2022
+
+**/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -11,52 +22,43 @@
 
 int main()
 {
-    Game_state state = initialize_game_state();
+    system("chcp 437");
+    system("cls");
+
+    GameState state = initializeGameState();
 
     int sudoku[9][9] = {{0,1,2,3,4,5,6,7,8}, {0,1,2,3,4,5,6,7,8}, {0,1,2,3,4,5,6,7,8}, {0,1,2,3,4,5,6,7,8}, {0,1,2,3,4,5,6,7,8}, {0,1,2,3,4,5,6,7,8}, {0,1,2,3,4,5,6,7,8}, {0,1,2,3,4,5,6,7,8}, {0,1,2,3,4,5,6,7,8}};
-    clock_t st;
-    int frame = 0;
+
+    int timeInSecs = 0;
+    double loopTime = 0;
 
     int posX = 0;
     int posY = 0;
     bool detail = false;
 
-    st = clock();
-/*
+    clock_t st = clock();
+
+
     while(1)
     {
-            //system("cls");
+        loopTime += getCurrentSudokuTimeInSecs(st);      // calculates the time the last loop took and adds it to variable
 
-            st = clock();
+        if(loopTime >= 1)                                // Adds the time of the last loops if it exceeds more than one second and clears it afterwards
+        {
+            timeInSecs += (int) loopTime;
+            loopTime = 0;
+        }
 
-            Game_state state;
+        st = clock();                                   // creates the new loop clock
 
-            state.state = 1;
+        int playCondition = getStateInput(&state, &posX, &posY, &detail, &sudoku, &timeInSecs, st);   // gets and uses the user input
 
-            printf("%i", frame);
-
-            printf("\n\n");
-
-            printf("\nx: %i \ny: %i", posX, posY);
-            printf("\nSmall array = %d", detail);
-
-
-            get_state_input(&state, &posX, &posY, &detail, &sudoku, &st);
-
-            printf("\n\n\n");
-
-            int timeInSecs = get_current_sudoku_time_in_secs(st);
-
-            printf("Time it took was %i seconds", timeInSecs);
-
-            printf("\n\n\n");
-
-            frame++;
+        if(!playCondition)                              // stops the game if it needs to
+        {
+            return 0;
+        }
 
 
     }
-*/
-    show_control_screen();
-
     return 0;
 }

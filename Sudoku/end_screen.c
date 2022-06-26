@@ -3,23 +3,18 @@
 #include <time.h>
 #include "sudoku_time.h"
 
-
-void show_end_screen(bool isWin, clock_t start_time)
+//params: total time
+//
+//Shows the end screen and how long the use needed for completion
+void showEndScreen(int timeInSecs)
 {
     system("cls");
 
+    printHeadingMain("You won!");
+
     printf("\n\n\n\n");
 
-    int time_in_secs = get_current_sudoku_time_in_secs(start_time);
-
-    if(isWin)
-    {
-        printf("WIN   -   You finished in %i", time_in_secs);
-    }
-    else
-    {
-        printf("LOSE   -    You finished in %i", time_in_secs);
-    }
+    printf("You finished in %i seconds!", timeInSecs);
 
     printf("\n\n\n\n");
 

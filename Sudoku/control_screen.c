@@ -1,84 +1,155 @@
 #include "control_screen.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <windows.h>
 
-void show_control_screen()
+
+//shows the control screen
+void showControlScreen()
 {
-   print_heading("Controls");
+    printHeadingMain("Controls");
 
-   print_controls();
+    printControls();
+
+    printf("\n");
+
+    printFullLine(getScreenWidth(), '_');
+
+    char* continueText = "Press any key to continue!";
+
+    int paddingSize = (getScreenWidth() - strlen(continueText)) / 2;
+
+    for(int i = 0; i < paddingSize; i++)
+    {
+       printf(" ");
+    }
+
+    printf("%s", continueText);
 }
 
-void print_controls()
+//prints the controls predefined in two arrays centered around the filler string
+void printControls()
 {
-    int controls_array_length = 4;
+    int controlsArraysLength = 5;
 
-    char* controls_array[4] = {"WASD or arrow keys  -   Move in fields or blocks",
-    "space bar   -   Switch between blocks and fields",
-    "C   -   Shows controls screen",
-    "check   -   Checks your board for completion"};
+    char* controlsKeysArray[5] = {"WASD or arrow keys",
+    "Space bar",
+    "C",
+    "Return",
+    "Escape"};
 
-    for(int i = 0; i < controls_array_length; i++)
+    char* controlsDefinitionArray[5] = {"Move in fields or blocks",
+    "Switch between blocks and fields",
+    "Shows controls screen",
+    "Checks your board for completion",
+    "Saves and quits the game"};
+
+    char* filler = "    <-->   ";
+
+    for(int i = 0; i < controlsArraysLength; i++)
     {
         printf("\n");
 
-        int padding = (120 - strlen(controls_array[i])) / 2;
+        int padding = getScreenWidth() / 2 - strlen(controlsKeysArray[i]) - 7;
 
         for(int j = 0; j < padding; j++)
         {
             printf(" ");
         }
 
-        printf("%s\n", controls_array[i]);
+        printf("%s%s%s\n", controlsKeysArray[i], filler, controlsDefinitionArray[i]);
     }
 }
 
-void print_heading(char* header)
+//params: string you want to print, char which you want to surround your heading, int how wide you want your side lines to be
+void printHeading(char* header, char frameChar, int borderWidth)
 {
-    print_full_line();
+    int screenWidth = getScreenWidth();
 
-    print_border_line();
+    printFullLine(screenWidth, frameChar);
 
-    printf("##");
+    printBorderLine(screenWidth, frameChar, borderWidth);
 
-    int header_length = strlen(header);
+    for(int i = 0; i < borderWidth; i++) {
+        printf("%c", frameChar);
+    }
 
-    int empty_space_next_to_header = (120 - 4 - header_length) / 2;
+    int headerLength = strlen(header);
 
-    for(int i = 0; i < empty_space_next_to_header; i++)
+    if(headerLength % 2 != 0)
     {
         printf(" ");
     }
 
+    int emptySpaceNextToHeader = (screenWidth - (borderWidth * 2) - headerLength) / 2;
 
+    for(int i = 0; i < emptySpaceNextToHeader; i++)
+    {
+        printf(" ");
+    }
 
     printf("%s", header);
 
-    for(int i = 0; i < empty_space_next_to_header; i++)
+    for(int i = 0; i < emptySpaceNextToHeader; i++)
     {
         printf(" ");
     }
 
-    printf("##");
+    for(int i = 0; i < borderWidth; i++) {
+        printf("%c", frameChar);
+    }
 
-    print_border_line();
+    printBorderLine(screenWidth, frameChar, borderWidth);
 
-    print_full_line();
+    printFullLine(screenWidth, frameChar);
 }
 
-void print_full_line()
+//prints the heading with '#' and a thickness of 2
+void printHeadingMain(char* header)
 {
-    for(int i = 0; i < 120; i++)
+    printHeading(header, '#', 2);
+}
+
+//prints the heading with '.' and a thickness of 1
+void printHeadingSub(char* header)
+{
+    printHeading(header, '.', 1);
+}
+
+//params: the width of the screen and a char you want to use as a line
+//
+//prints a line starting at the current cursor position which is as long as screenWidth is with the chosen char
+void printFullLine(int screenWidth, char frameChar)
+{
+    for(int i = 0; i < screenWidth; i++)
     {
-        printf("#");
+        printf("%c", frameChar);
     }
 }
 
-void print_border_line()
+//params: screenWidth, a char to print and the border thickness
+//
+//prints two dots starting at the current cursor position and the screenWidth with the chosen char
+void printBorderLine(int screenWidth, char frameChar, int borderWidth)
 {
-    printf("##");
-    for(int i = 0; i < 116; i++)
-    {
+    for(int i = 0; i < borderWidth; i++) {
+        printf("%c", frameChar);
+    }
+    for(int i = 0; i < screenWidth - borderWidth * 2; i++) {
         printf(" ");
     }
-    printf("##");
+    for(int i = 0; i < borderWidth; i++) {
+        printf("%c", frameChar);
+    }
+}
+
+//calculates and returns the current width of the terminal
+int getScreenWidth()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int ret;
+    ret = GetConsoleScreenBufferInfo(GetStdHandle( STD_OUTPUT_HANDLE ),&csbi);
+
+    return csbi.dwSize.X;
 }

@@ -33,17 +33,17 @@
 1655890428 /home/joel/develop/SudokuProjekt/Sudoku/end_screen.h
 	<stdbool.h>
 
-1656153950 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\end_screen.c
+1656278372 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\end_screen.c
 	"end_screen.h"
 	<stdio.h>
 	<time.h>
 	"sudoku_time.h"
 
-1656153991 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\end_screen.h
+1656276204 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\end_screen.h
 	<stdbool.h>
 	<time.h>
 
-1656163099 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\game_input.c
+1656278270 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\game_input.c
 	<stdio.h>
 	<stdlib.h>
 	<unistd.h>
@@ -51,11 +51,15 @@
 	<stdbool.h>
 	"game_input.h"
 	"sudoku_state.h"
+	"displayGame.h"
+	"control_screen.h"
+	"saveload.h"
+	"saveScreen.h"
 
-1656162469 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\game_input.h
+1656276204 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\game_input.h
 	"sudoku_state.h"
 
-1656165457 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\main.c
+1656276779 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\main.c
 	<stdio.h>
 	<stdlib.h>
 	<unistd.h>
@@ -66,24 +70,68 @@
 	"end_screen.h"
 	"sudoku_time.h"
 
-1656144445 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\sudoku_time.c
+1656276204 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\sudoku_time.c
 	<time.h>
 	"sudoku_time.h"
 	<stdbool.h>
 
-1656144041 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\sudoku_time.h
+1656276204 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\sudoku_time.h
 
-1656147607 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\sudoku_state.c
+1656278321 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\sudoku_state.c
 	<stdio.h>
 	<time.h>
 	<stdbool.h>
 	"sudoku_state.h"
 
-1656147606 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\sudoku_state.h
+1656276204 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\sudoku_state.h
 
-1656169315 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\control_screen.c
+1656278900 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\control_screen.c
 	"control_screen.h"
 	<stdlib.h>
+	<stdio.h>
+	<unistd.h>
+	<windows.h>
 
-1656161547 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\control_screen.h
+1656275652 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\control_screen.h
+
+1656245484 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\displaygame.c
+	<stdio.h>
+	<stdbool.h>
+	<windows.h>
+	"displayGame.h"
+
+1656243658 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\displaygame.h
+
+1656243480 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\solvesudoku.c
+	<stdio.h>
+	<stdbool.h>
+	"solveSudoku.h"
+
+1656270954 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\solvesudoku.h
+	<stdbool.h>
+
+1656275653 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\saveload.c
+	"saveload.h"
+	"solveSudoku.h"
+
+1656257124 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\saveload.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	<ctype.h>
+	<windows.h>
+	<conio.h>
+
+1656279046 f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\savescreen.h
+	"saveload.h"
+	<stdio.h>
+	"sudoku_time.h"
+	"control_screen.h"
+	<stdbool.h>
+	<time.h>
+
+1656279042 source:f:\dokumente\gitrepos\iniationware\sudokuprojekt\sudoku\savescreen.c
+	"saveScreen.h"
+	"displayGame.h"
 
